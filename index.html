@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- cdn axios -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    
+    <title>Document</title>
+
+    <!--link a estilos-->
+    <link rel="stylesheet" href="./style.css">
+
+    <!--link a fuentes-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+
+    <!--link a iconos-->
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.6.0/uicons-bold-rounded/css/uicons-bold-rounded.css'>
+
+</head>
+<body>
+    <header>
+        <div class="container-title">
+          <h1 class="title">Rick y Morty</h1>  
+        </div>
+    </header>
+    <div class="hero">
+
+    </div>
+    <main>
+        <div class="container-busqueda">
+            <div class="container-input-busqueda">
+                <label>Búsqueda</label>
+                <input type="text" placeholder="Ingresá tu búsqueda"><i id="lupa" class="fi fi-br-search"></i>
+            </div>
+            <div class="container-selects">
+                <div class="container-tipo">
+                    <label for="tipo">TIPO</label>
+                    <select name="tipo" id="tipo">
+                        <option value="personajes">PERSONAJES</option>
+                        <option value="episodios">EPISODIOS</option>
+                    </select>
+                </div>
+                <div class="container-orden">
+                    <label for="orden">ORDEN</label>
+                    <select name="orden" id="orden">
+                        <option value="a-to-z">A - Z</option>
+                        <option value="a-to-a">Z - A</option>
+                        <option value="mas-viejos">Más viejos</option>
+                        <option value="mas-nuevos">Más nuevos</option>
+                    </select>
+                </div>
+            </div>
+            <button type="button">BUSCAR</button>
+        </div>
+        <div class="container-resultados">
+            <h2>Resultados</h2>
+            <p>cantidad resultados</p>
+            <div id="container-personajes"></div>
+        </div>
+        <div class="container-botones">
+            <button id="boton-anterior" class="anterior"><</i></button>
+            <button id="boton-siguiente" class="siguiente">></i></button>
+        </div>
+    </main>
+
+    <!-- ---------link a JS---------- -->
+    <script src="./main.js"></script>
+</body>
+</html>

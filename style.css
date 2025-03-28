@@ -1,0 +1,175 @@
+@font-face {
+    font-family: "Rick-Morty";
+    src: url("./fuentes/get_schwifty.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+}
+
+* {
+    margin:0;
+    font-family:Roboto;
+}
+
+/* header */
+header {
+    background-color: #321250;
+    width:100%;
+    height:50px;
+    padding:20px 0;
+    display:flex;
+    justify-content:center;
+}
+
+header .container-title {
+    width: 300px;
+    height: 50px;
+    /* transform: skew(-20deg); */
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+
+
+header .title {
+    font-family: Rick-Morty;
+    font-size:38px;
+    font-weight: bold;
+    letter-spacing: 4px;
+    color:#42b5cb;
+    padding:0 20px;
+    text-shadow: 1px 1px 0px #bfdf43, -1px 1px 0px #bfdf43, 1px -1px 0px #bfdf43, -1px -1px 0px 
+    #bfdf43;
+}
+
+/* hero */
+body .hero {
+    height:400px;
+    background-image: url(./imagenes/thumb-1920-942064.jpg);
+    background-size:cover;
+}
+
+main {
+    width:100%;
+}
+
+/* contenedor elementos busqueda */
+main .container-busqueda {
+    padding: 20px 10px;
+    display:flex;
+    flex-direction:column;
+}
+
+.container-input-busqueda {
+    display:flex;
+    flex-direction:column;
+    position:relative;
+}
+
+.container-input-busqueda label {
+    font-size:25px;
+    font-weight:bold;
+    letter-spacing: 1px;
+    color:#2f2f2f;
+    padding:10px;
+}
+
+.container-input-busqueda input {
+    font-size:25px;
+    letter-spacing:2px;
+    padding: 10px 40px;
+    border:0;
+    border-bottom: 2px solid #000000;
+}
+
+.container-input-busqueda #lupa {
+    position:absolute;
+    top:60%;
+    left:10px;
+}
+
+.container-selects {
+    display:flex;
+    justify-content:space-around;
+    width: 100%;
+    padding: 20px 0;
+}
+
+.container-selects label {
+    font-size:15px;
+    font-weight:bold;
+    letter-spacing: 1px;
+    color:#4c4c4c;
+}
+
+.container-tipo .container-orden {
+    padding: 0 10px;
+}
+
+ .container-orden select {
+    color:#000000;
+    font-size:15px;
+    letter-spacing: 1px;
+    border:0;
+ }
+
+ .container-tipo select {
+    color:#000000;
+    font-size:15px;
+    letter-spacing: 1px;
+    border:0;
+ }
+
+ .container-busqueda button {
+    font-size:20px;
+    letter-spacing: 2px;
+    padding: 10px;
+    margin-top:10px;
+    width:100%;
+    border:0;
+    background-color: #7237ab;
+    color: white;
+ }
+
+/* contenedor cards de personajes */
+ #container-personajes {
+    display:flex;
+    width:100%;
+    flex-wrap:wrap; 
+    justify-content:space-around;
+    align-items:center;
+}
+
+#container-personajes .personaje {
+    width:300px;
+    height:300px;
+    margin:0 20px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+}
+
+#container-personajes img {
+    height: 15rem;
+    width:15rem;
+}
+
+#container-personajes h3{
+    margin:15px;
+}
+
+/* botones de paginacion */
+.container-botones {
+    display:flex;
+    justify-content: center;
+}
+
+.container-botones button {
+    font-size:30px;
+    margin:10px;
+    width:60px;
+    border:0;
+    border-radius:10px;
+    background-color: #7237ab;
+    color: white;
+ }
