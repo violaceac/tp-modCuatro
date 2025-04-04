@@ -21,22 +21,27 @@
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.6.0/uicons-bold-rounded/css/uicons-bold-rounded.css'>
 
 </head>
+
 <body>
     <header>
         <div class="container-title">
           <h1 class="title">Rick y Morty</h1>  
         </div>
     </header>
-    <div class="hero">
 
-    </div>
+    <div class="hero"> </div>
+
     <main>
+        <!--container busqueda-->
         <div class="container-busqueda">
+            <!--input busqueda-->
             <div class="container-input-busqueda">
                 <label>Búsqueda</label>
-                <input type="text" placeholder="Ingresá tu búsqueda"><i id="lupa" class="fi fi-br-search"></i>
+                <input id="input-busqueda" type="text" placeholder="Ingresá tu búsqueda"><i id="lupa" class="fi fi-br-search"></i>
             </div>
+            <!--container selects-->
             <div class="container-selects">
+                <!--select tipo-->
                 <div class="container-tipo">
                     <label for="tipo">TIPO</label>
                     <select name="tipo" id="tipo">
@@ -44,6 +49,7 @@
                         <option value="episodios">EPISODIOS</option>
                     </select>
                 </div>
+                <!--select orden-->
                 <div class="container-orden">
                     <label for="orden">ORDEN</label>
                     <select name="orden" id="orden">
@@ -54,8 +60,10 @@
                     </select>
                 </div>
             </div>
-            <button type="button">BUSCAR</button>
+            <button id="boton-buscar" type="button">BUSCAR</button>
+            <button id="boton-limpiar" type="button">LIMPIAR</button>
         </div>
+        <!--container resultados-->
         <div class="container-resultados">
             <h2>Resultados</h2>
             <p>cantidad resultados</p>
@@ -66,6 +74,10 @@
             <button id="boton-siguiente" class="siguiente">></i></button>
         </div>
     </main>
+
+    <footer>
+        <span>Hecho con schwiftyness by ViolaceaC</span>
+    </footer>
 
     <!-- ---------link a JS---------- -->
     <script src="./main.js"></script>
