@@ -29,7 +29,6 @@ header .container-title {
     justify-content:center;
   }
 
-
 header .title {
     font-family: Rick-Morty;
     font-size:38px;
@@ -41,6 +40,8 @@ header .title {
     #bfdf43;
 }
 
+
+
 /* hero */
 body .hero {
     height:400px;
@@ -51,6 +52,8 @@ body .hero {
 main {
     width:100%;
 }
+
+
 
 /* contenedor elementos busqueda */
 main .container-busqueda {
@@ -89,10 +92,13 @@ main .container-busqueda {
 
 .container-selects {
     display:flex;
-    justify-content:space-around;
+    justify-content:start;
+    flex-wrap:wrap;
     width: 100%;
     padding: 20px 0;
+    height:150px;
 }
+
 
 .container-selects label {
     font-size:15px;
@@ -101,64 +107,59 @@ main .container-busqueda {
     color:#4c4c4c;
 }
 
-.container-tipo .container-orden {
-    padding: 0 10px;
-}
 
- .container-orden select {
+ .container-selects select {
     color:#000000;
     font-size:15px;
     letter-spacing: 1px;
     border:0;
  }
 
- .container-tipo select {
-    color:#000000;
-    font-size:15px;
-    letter-spacing: 1px;
-    border:0;
- }
 
- .container-busqueda #boton-buscar {
+ .container-busqueda button {
     font-size:20px;
     letter-spacing: 2px;
     padding: 10px;
     margin-top:10px;
     width:100%;
     border:0;
+    border-radius:10px;
+ }
+
+ .container-busqueda #boton-buscar {
+
     background-color: #7237ab;
     color: white;
  }
 
  .container-busqueda #boton-limpiar {
-    font-size:20px;
-    letter-spacing: 2px;
-    padding: 10px;
-    margin-top:10px;
-    width:100%;
     border:1px solid #7237ab;
     color: #7237ab;
  }
 
+
+
 /* contenedor resultados y cantidad de resultados */
-main .container-resultados {
+main .container-cantidad-resultados {
     padding: 20px 10px;
     display:flex;
     flex-direction:column;
 }
 
-.container-resultados h2 {
+.container-cantidad-resultados h2 {
     color:#4c4c4c;
     margin:5px 0;
 }
 
-.container-resultados p {
+.container-cantidad-resultados p {
     color:#5f5f5f;
     margin:5px 0;
 }
 
+
+
 /* contenedor cards de personajes */
- #container-personajes {
+ #container-resultados {
     display:flex;
     width:100%;
     margin-top:20px;
@@ -167,7 +168,7 @@ main .container-resultados {
     align-items:center;
 }
 
-#container-personajes .personaje {
+#container-resultados .personaje {
     width:300px;
     height:300px;
     margin:0 20px;
@@ -177,16 +178,44 @@ main .container-resultados {
     align-items:center;
 }
 
-#container-personajes img {
+#container-resultados .personaje img {
     height: 15rem;
     width:15rem;
 }
 
-#container-personajes h3{
+#container-resultados .personaje h3{
     margin:15px;
     font-family: Rick-Morty;
     color:#42b5cb;
 }
+
+#container-resultados .episodio {
+    width:300px;
+    height:100px;
+    margin:10px 20px;
+    padding:10px;
+    border:1px solid #4c4c4c;
+    border-radius:10px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items: start;
+}
+
+#container-resultados .episodio h3 {
+    font-family:Roboto;
+    color:#343434;
+    margin:5px 0;
+}
+
+#container-resultados .episodio span {
+    font-family:Roboto;
+    color:#4c4c4c;
+}
+
+
+
+
 
 /* botones de paginacion */
 .container-botones {
@@ -196,7 +225,7 @@ main .container-resultados {
 
 .container-botones button {
     font-size:30px;
-    margin:10px;
+    margin:2px;
     margin-bottom:20px;
     width:60px;
     border:0;
@@ -204,6 +233,8 @@ main .container-resultados {
     background-color: #7237ab;
     color: white;
  }
+
+
 
  /* footer */
 body footer {

@@ -49,6 +49,25 @@
                         <option value="episodios">EPISODIOS</option>
                     </select>
                 </div>
+                <!--select status-->
+                <div class="container-status">
+                    <label for="status">STATUS</label>
+                    <select name="status" id="status">
+                        <option value="Alive">Vivo/a</option>
+                        <option value="Dead">Muerto/a</option>
+                        <option value="unknown">Desconocido</option>
+                    </select>
+                </div>
+                <!--select genero-->
+                <div class="container-genero">
+                    <label for="genero">GENERO</label>
+                    <select name="genero" id="genero">
+                        <option value="Female">Mujer</option>
+                        <option value="Male">Hombre</option>
+                        <option value="Genderless">Sin género</option>
+                        <option value="unknown">No lo sé</option>
+                    </select>
+                </div>
                 <!--select orden-->
                 <div class="container-orden">
                     <label for="orden">ORDEN</label>
@@ -64,14 +83,16 @@
             <button id="boton-limpiar" type="button">LIMPIAR</button>
         </div>
         <!--container resultados-->
-        <div class="container-resultados">
+        <div class="container-cantidad-resultados">
             <h2>Resultados</h2>
             <p>cantidad resultados</p>
-            <div id="container-personajes"></div>
+            <div id="container-resultados"></div>
         </div>
         <div class="container-botones">
-            <button id="boton-anterior" class="anterior"><</i></button>
-            <button id="boton-siguiente" class="siguiente">></i></button>
+            <button id="boton-primera"><<</i></button>
+            <button id="boton-anterior"><</i></button>
+            <button id="boton-siguiente">></i></button>
+            <button id="boton-ultima" >>></i></button>
         </div>
     </main>
 
