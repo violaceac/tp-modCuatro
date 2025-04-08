@@ -14,55 +14,69 @@ const $inputBusqueda = $("#input-busqueda")
 const $selectTipo = $("#tipo")
 const $btnBuscar = $("#boton-buscar")
 
+const $containerStatus = $("#container-status");
+const $containerGenero = $("#container-genero");
+const $selectStatus = $("#select-status");
+const $selectGenero = $("#select-genero");
 
+const $spanResultados = $("#cantidad-resultados");
 
+//variables
 let currentPage = 1;
 let maxPage = 1;
 let currentSearch = "";
 let url =""
-
+let cantidadResultados = ""
 
 
 // obtener datos al cargar la pagina
-async function obtenerDatos(page) {
+async function obtenerDatos(page, tipo) {
     try {
-        let url = currentSearch ? tipoDeBusqueda(page) : `https://rickandmortyapi.com/api/character?page=${page}`;
+      let url = construirURL(tipo, page);
+      const response = await axios(url);
+      console.log(url)
 
-        const response = await axios(url);
-        // console.log(response)
-        // console.log(response.data)
-        return response.data
+      cantidadResultados = response.data.info.count;
+
+      return response.data;
     } catch (error) {
-        console.log("Error en la búsqueda:", error);
-        return null
+      console.log("Error en la búsqueda:", error);
+      return null;
     }
-}
+  }
+
+
+//asignar url segun tipo de busqueda (episodios o personajes)
+function construirURL(tipo, page) {
+    const hayBusqueda = currentSearch !== "";
+
+    if (hayBusqueda) {
+        url = tipo === "episodios" ? `https://rickandmortyapi.com/api/episode/?name=${currentSearch}&page=${page}` : `https://rickandmortyapi.com/api/character/?name=${currentSearch}&page=${page}`;
+    } else {
+        url = tipo === "episodios" ? `https://rickandmortyapi.com/api/episode?page=${page}` : `https://rickandmortyapi.com/api/character?page=${page}`;
+    }
+    return url
+
+  }
 
 // mostrar personajes
-// function pintarDatos(arrayPersonajes) {
-//     console.log("se pintaron los datos de la pagina", `${currentPage}`)
-//     $containerResultados.innerHTML = "";
-//     for (const personaje of arrayPersonajes) {
-//         // console.log(personaje)
-//         $containerResultados.innerHTML += `<div class="personaje"><img src="${personaje.image}"><h3>${personaje.name}</h3></div>`
-//     }
-// }
-//pintarDatos ====> pintarPersonajes y pintarEpisodios
-
 function pintarPersonajes(arrayPersonajes) {
-    console.log("se pintaron los datos de la pagina", `${currentPage}`)
+    console.log("se pintaron los personajes de la pagina", `${currentPage}`)
+
     $containerResultados.innerHTML = "";
-    currentPage = 1;
+    pintarResultados()
 
     for (const personaje of arrayPersonajes) {
          $containerResultados.innerHTML += `<div class="personaje"><img src="${personaje.image}"><h3>${personaje.name}</h3></div>`
     }
 }
-
+// mostrar episodios
 function pintarEpisodios(arrayEpisodios) {
-    console.log("se pintaron los datos de la pagina", `${currentPage}`)
+    console.log("se pintaron los episodios de la pagina", `${currentPage}`)
+    console.log(maxPage)
+    console.log(arrayEpisodios)
     $containerResultados.innerHTML = "";
-    currentPage = 1;
+    pintarResultados()
 
     for (const episodio of arrayEpisodios) {
          $containerResultados.innerHTML += `<div class="episodio">
@@ -73,71 +87,124 @@ function pintarEpisodios(arrayEpisodios) {
          </div>`
     }
 }
+//mostrar cantidad de resultados
+function pintarResultados() {
+    const tipo = $inputBusqueda.value
 
+    $spanResultados.innerText = `${cantidadResultados} resultados`
+}
+
+
+//mostrar u ocultar elementos
+function mostrarElemento(selectors) {
+    for (const selector of selectors) {
+        selector.style.display = "block";
+    }
+  };
+  function ocultarElemento(selectors) {
+    for (const selector of selectors) {
+        selector.style.display = "none";
+    }
+  };
+
+//seleccionar tipo
+$selectTipo.addEventListener("input", async () => {
+    currentPage = 1;
+    const tipo = $selectTipo.value;
+  
+    const data = await obtenerDatos(currentPage, tipo);
+  
+  
+    if (tipo === "episodios") {
+      pintarEpisodios(data.results);
+      ocultarElemento([$containerStatus, $containerGenero]);
+    } else {
+      pintarPersonajes(data.results);
+      mostrarElemento([$containerStatus, $containerGenero]);
+    }
+  
+    maxPage = data.info.pages;
+  });
 
 //buscar
 $btnBuscar.addEventListener("click", async () => {
     $containerResultados.innerHTML = `<h1>Loading...</h1>`;
     currentPage = 1;
     currentSearch = $inputBusqueda.value;
-
-    const data = await obtenerDatos(currentPage); //porque me tira este error si finalmente cuando le saco await no lo espera y me da error por ejemplo en maxPage
-    if($selectTipo.value === "episodios") {
-        pintarEpisodios(data.results)
-        console.log(data.results)
-        console.log(data)
+    const tipo = $selectTipo.value;
+  
+    const data = await obtenerDatos(currentPage, tipo);
+  
+    if (tipo === "episodios") {
+      pintarEpisodios(data.results);
     } else {
-        pintarPersonajes(data.results)
+      pintarPersonajes(data.results);
     }
-
     maxPage = data.info.pages;
-});
-
-function tipoDeBusqueda(page) {
-    if($selectTipo.value === "episodios") {
-    url = `https://rickandmortyapi.com/api/episode/?name=${currentSearch}&page=${page}`
-} else {
-    url = `https://rickandmortyapi.com/api/character/?name=${currentSearch}&page=${page}`
-}
-return url
-}
-
-
+  });
 
 //paginacion
-// $btnSiguiente.addEventListener("click", async () => {
-//     console.log(maxPage)
-//     if(currentPage < maxPage) {
-//         currentPage++;
-//         const data= await obtenerDatos(currentPage);
-//         pintarDatos(data.results)
-//         console.log(data.results)
-//         console.log(currentPage) 
-//     }
-// });
-// $btnAnterior.addEventListener("click", async () => {
-//     if (currentPage > 1) {
-//         currentPage--;
-//         const data = await obtenerDatos(currentPage);
-//         pintarDatos(data.results)
-//         console.log(data.results)
-//         console.log(currentPage)
-//     }
-// });
-// $btnPrimera.addEventListener("click", async () => {
-//     if(currentPage != 1) {
-//         currentPage = 1
-//         const data = await obtenerDatos(currentPage);
-//         pintarDatos(data.results)
-//     }
-// })
-// $btnUltima.addEventListener("click", async () => {
-//     if(currentPage < maxPage) {
-//         currentPage = maxPage
-//         const data = await obtenerDatos(currentPage);
-//         pintarDatos(data.results)
-//     }
-// })
+$btnSiguiente.addEventListener("click", async () => {
+
+    if(currentPage < maxPage) {
+        currentPage++;
+        const tipo = $selectTipo.value;
+  
+        const data = await obtenerDatos(currentPage, tipo);
+
+        if(tipo === "episodios") {
+            pintarEpisodios(data.results)
+        } else {
+            pintarPersonajes(data.results)
+        }
+        maxPage = data.info.pages;
+    } 
+});
+$btnAnterior.addEventListener("click", async () => {
+    if(currentPage > 1) {
+        currentPage--;
+        const tipo = $selectTipo.value;
+  
+        const data = await obtenerDatos(currentPage, tipo);
+
+        if(tipo === "episodios") {
+            pintarEpisodios(data.results)
+        } else {
+            pintarPersonajes(data.results)
+        }
+        maxPage = data.info.pages;
+    }
+});
+$btnPrimera.addEventListener("click", async () => {
+    if(currentPage != 1) {
+        currentPage = 1
+        const tipo = $selectTipo.value;
+
+        const data = await obtenerDatos(currentPage, tipo);
+
+        if(tipo === "episodios") {
+            pintarEpisodios(data.results)
+        } else {
+            pintarPersonajes(data.results)
+        }
+        maxPage = data.info.pages;
+    }
+})
+$btnUltima.addEventListener("click", async () => {
+    if(currentPage < maxPage) {
+        currentPage = maxPage
+        const tipo = $selectTipo.value;
+        
+        const data = await obtenerDatos(currentPage, tipo);
+
+        if(tipo === "episodios") {
+            pintarEpisodios(data.results)
+        } else {
+            pintarPersonajes(data.results)
+        }
+        maxPage = data.info.pages;
+    }
+})
 
 
 
@@ -162,8 +229,9 @@ return url
   window.onload = async () => {
     currentPage = 1;
     currentSearch = ""; 
+    tipo = $inputBusqueda.value
   
-    const data = await obtenerDatos(currentPage);
+    const data = await obtenerDatos(currentPage, tipo);
     if (data) {
       maxPage = data.info.pages;
       pintarPersonajes(data.results);

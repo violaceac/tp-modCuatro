@@ -50,18 +50,18 @@
                     </select>
                 </div>
                 <!--select status-->
-                <div class="container-status">
-                    <label for="status">STATUS</label>
-                    <select name="status" id="status">
+                <div id="container-status" class="container-status">
+                    <label id="label-status" for="status">STATUS</label>
+                    <select name="status" id="select-status">
                         <option value="Alive">Vivo/a</option>
                         <option value="Dead">Muerto/a</option>
                         <option value="unknown">Desconocido</option>
                     </select>
                 </div>
                 <!--select genero-->
-                <div class="container-genero">
-                    <label for="genero">GENERO</label>
-                    <select name="genero" id="genero">
+                <div id="container-genero" class="container-genero">
+                    <label id="label-genero" for="genero">GENERO</label>
+                    <select id="select-genero" name="genero" id="genero">
                         <option value="Female">Mujer</option>
                         <option value="Male">Hombre</option>
                         <option value="Genderless">Sin género</option>
@@ -80,12 +80,12 @@
                 </div>
             </div>
             <button id="boton-buscar" type="button">BUSCAR</button>
-            <button id="boton-limpiar" type="button">LIMPIAR</button>
+            <!-- <button id="boton-limpiar" type="button">LIMPIAR</button> -->
         </div>
         <!--container resultados-->
         <div class="container-cantidad-resultados">
             <h2>Resultados</h2>
-            <p>cantidad resultados</p>
+            <span id="cantidad-resultados" ></span>
             <div id="container-resultados"></div>
         </div>
         <div class="container-botones">
