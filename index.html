@@ -9,50 +9,76 @@
     
     <title>Document</title>
 
+     <!--link a fuentes-->
+     <link rel="preconnect" href="https://fonts.googleapis.com">
+     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+     <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+ 
+
+    <!-- cdn tailwind -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                    fontFamily: {
+                        roboto: 'Roboto',
+                        rym: 'Rick-Morty',
+                    },
+                    extend : {
+                        colors: {
+                            violetaHeader:'#321250',
+                            violeta: '#7237ab',
+                            grisOscuro: '#4c4c4c',
+                            grisClaro: '#5f5f5f',
+                            grisLabel: '#2f2f2f',
+                            nombreEpisodio: '#343434',
+                            verde:'#bfdf43'
+                        }
+                    }
+            }
+        }
+    </script>
+
     <!--link a estilos-->
     <link rel="stylesheet" href="./style.css">
-
-    <!--link a fuentes-->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 
     <!--link a iconos-->
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.6.0/uicons-bold-rounded/css/uicons-bold-rounded.css'>
 
 </head>
 
-<body>
-    <header>
-        <div class="container-title">
+<body class="m-0 font-roboto">
+    <header class="bg-violetaHeader w-full h24 py-5 flex justify-center">
+        <div class="container-title w-80 h-12 flex items-center justify-center">
           <h1 class="title">Rick y Morty</h1>  
         </div>
     </header>
 
-    <div class="hero"> </div>
+    <div class="hero h-[400px] bg-[url('./imagenes/thumb-1920-942064.jpg')] bg-cover"> </div>
 
-    <main>
+    <main class="w-full">
         <!--container busqueda-->
-        <div class="container-busqueda">
+        <div class="container-busqueda py-5 px-2.5 flex flex-col">
             <!--input busqueda-->
-            <div class="container-input-busqueda">
-                <label>Búsqueda</label>
-                <input id="input-busqueda" type="text" placeholder="Ingresá tu búsqueda"><i id="lupa" class="fi fi-br-search"></i>
+            <div class="container-input-busqueda flex flex-col relative">
+                <label class="text-2xl font-bold tracking-[1px] text-grisLabel p-2.5">Búsqueda</label>
+                <input class="text-2xl tracking-[2px] py-2.5 px-10 border-0 border-b-2 border-solid border-black " id="input-busqueda" type="text" placeholder="Ingresá tu búsqueda"><i id="lupa" class="fi fi-br-search absolute top-[60%] left-2.5"></i>
             </div>
             <!--container selects-->
-            <div class="container-selects">
+            <div class="container-selects flex justify-start flex-wrap w-full py-5 h-[150px]">
                 <!--select tipo-->
                 <div class="container-tipo">
-                    <label for="tipo">TIPO</label>
-                    <select name="tipo" id="tipo">
+                    <label class="text-base font-bold tracking-[1px] text-grisOscuro" for="tipo">TIPO</label>
+                    <select class="text-black text-base tracking-[1px] border-0" name="tipo" id="tipo">
                         <option value="personajes">PERSONAJES</option>
                         <option value="episodios">EPISODIOS</option>
                     </select>
                 </div>
                 <!--select status-->
                 <div id="container-status" class="container-status">
-                    <label id="label-status" for="status">STATUS</label>
-                    <select name="status" id="select-status">
+                    <label class="text-base font-bold tracking-[1px] text-grisOscuro" id="label-status" for="status">STATUS</label>
+                    <select class="text-black text-base tracking-[1px] border-0" name="status" id="select-status">
                         <option value="Alive">Vivo/a</option>
                         <option value="Dead">Muerto/a</option>
                         <option value="unknown">Desconocido</option>
@@ -60,44 +86,38 @@
                 </div>
                 <!--select genero-->
                 <div id="container-genero" class="container-genero">
-                    <label id="label-genero" for="genero">GENERO</label>
-                    <select id="select-genero" name="genero" id="genero">
+                    <label class="text-base font-bold tracking-[1px] text-grisOscuro" id="label-genero" for="genero">GENERO</label>
+                    <select class="text-black text-base tracking-[1px] border-0" id="select-genero" name="genero" id="genero">
                         <option value="Female">Mujer</option>
                         <option value="Male">Hombre</option>
                         <option value="Genderless">Sin género</option>
-                        <option value="unknown">No lo sé</option>
-                    </select>
-                </div>
-                <!--select orden-->
-                <div class="container-orden">
-                    <label for="orden">ORDEN</label>
-                    <select name="orden" id="orden">
-                        <option value="a-to-z">A - Z</option>
-                        <option value="a-to-a">Z - A</option>
-                        <option value="mas-viejos">Más viejos</option>
-                        <option value="mas-nuevos">Más nuevos</option>
+                        <option value="unknown">Desconocido</option>
                     </select>
                 </div>
             </div>
-            <button id="boton-buscar" type="button">BUSCAR</button>
+            <button class="text-xl tracking-[2px] p-2.5 mt-2.5 w-full border-0 rounded-[10px] bg-violeta text-white" id="boton-buscar" type="button">BUSCAR</button>
             <!-- <button id="boton-limpiar" type="button">LIMPIAR</button> -->
         </div>
         <!--container resultados-->
-        <div class="container-cantidad-resultados">
-            <h2>Resultados</h2>
-            <span id="cantidad-resultados" ></span>
-            <div id="container-resultados"></div>
+        <div id="container-cantidad-resultados" class="container-cantidad-resultados py-5 px-2.5 flex flex-col">
+            <h2 class="text-grisOscuro text-xl font-bold my-[5px]" >Resultados</h2>
+            <span class="text-grisClaro my-[5px]" id="cantidad-resultados" ></span>
+            <div class="flex w-full mt-5 flex-wrap justify-around items-center" id="container-resultados"></div>
         </div>
-        <div class="container-botones">
-            <button id="boton-primera"><<</i></button>
-            <button id="boton-anterior"><</i></button>
-            <button id="boton-siguiente">></i></button>
-            <button id="boton-ultima" >>></i></button>
+        <!--container personajeIndividual y episodioIndividual-->
+        <div class="hidden h-[800px] w-full bg-violeta flex justify-center items-center" id="container-personaje-individual"></div>
+        <div class="hidden h-[800px] w-full bg-violeta flex justify-center items-center" id="container-episodio-individual"></div>
+        <!--container botones de paginacion-->
+        <div id="container-botones" class="container-botones flex justify-center">
+            <button class="text-3xl m-0.5 mb-5 w-[60px] h-[50px] border-0 rounded-[10px] bg-violeta text-white" id="boton-primera"><<</i></button>
+            <button class="text-3xl m-0.5 mb-5 w-[60px] h-[50px] border-0 rounded-[10px] bg-violeta text-white" id="boton-anterior"><</i></button>
+            <button class="text-3xl m-0.5 mb-5 w-[60px] h-[50px] border-0 rounded-[10px] bg-violeta text-white" id="boton-siguiente">></i></button>
+            <button class="text-3xl m-0.5 mb-5 w-[60px] h-[50px] border-0 rounded-[10px] bg-violeta text-white" id="boton-ultima" >>></i></button>
         </div>
     </main>
 
-    <footer>
-        <span>Hecho con schwiftyness by ViolaceaC</span>
+    <footer class="h-[100px] bg-violetaHeader flex justify-center items-center" >
+        <span class="font-rym text-verde" >Hecho con schwiftyness by ViolaceaC</span>
     </footer>
 
     <!-- ---------link a JS---------- -->

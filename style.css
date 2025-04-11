@@ -5,29 +5,7 @@
     font-style: normal;
 }
 
-* {
-    margin:0;
-    font-family:Roboto;
-}
-
 /* header */
-header {
-    background-color: #321250;
-    width:100%;
-    height:50px;
-    padding:20px 0;
-    display:flex;
-    justify-content:center;
-}
-
-header .container-title {
-    width: 300px;
-    height: 50px;
-    /* transform: skew(-20deg); */
-    display:flex;
-    align-items:center;
-    justify-content:center;
-  }
 
 header .title {
     font-family: Rick-Morty;
@@ -41,82 +19,61 @@ header .title {
 }
 
 
-
 /* hero */
-body .hero {
-    height:400px;
-    background-image: url(./imagenes/thumb-1920-942064.jpg);
-    background-size:cover;
-}
-
-main {
-    width:100%;
-}
 
 
 
-/* contenedor elementos busqueda */
-main .container-busqueda {
-    padding: 20px 10px;
-    display:flex;
-    flex-direction:column;
-}
 
-.container-input-busqueda {
-    display:flex;
-    flex-direction:column;
-    position:relative;
-}
 
-.container-input-busqueda label {
+/* .container-input-busqueda label {
     font-size:25px;
     font-weight:bold;
     letter-spacing: 1px;
     color:#2f2f2f;
     padding:10px;
-}
+} */
 
-.container-input-busqueda input {
+/* .container-input-busqueda input {
     font-size:25px;
     letter-spacing:2px;
     padding: 10px 40px;
     border:0;
     border-bottom: 2px solid #000000;
-}
+} */
 
-.container-input-busqueda #lupa {
+/* .container-input-busqueda #lupa {
     position:absolute;
     top:60%;
     left:10px;
-}
+} */
 
-.container-selects {
+/* .container-selects {
     display:flex;
     justify-content:start;
     flex-wrap:wrap;
     width: 100%;
     padding: 20px 0;
     height:150px;
-}
+} */
 
 
-.container-selects label {
+/* .container-selects label {
     font-size:15px;
     font-weight:bold;
     letter-spacing: 1px;
     color:#4c4c4c;
-}
+} */
 
 
- .container-selects select {
+ /* .container-selects select {
     color:#000000;
     font-size:15px;
     letter-spacing: 1px;
     border:0;
- }
+ } */
 
 
- .container-busqueda button {
+ /* .container-busqueda button {
     font-size:20px;
     letter-spacing: 2px;
     padding: 10px;
@@ -124,51 +81,51 @@ main .container-busqueda {
     width:100%;
     border:0;
     border-radius:10px;
- }
-
+ } */
+/* 
  .container-busqueda #boton-buscar {
 
     background-color: #7237ab;
     color: white;
- }
+ } */
 
- .container-busqueda #boton-limpiar {
+ /* .container-busqueda #boton-limpiar {
     border:1px solid #7237ab;
     color: #7237ab;
- }
+ } */
 
 
 
 /* contenedor resultados y cantidad de resultados */
-main .container-cantidad-resultados {
+/* main .container-cantidad-resultados {
     padding: 20px 10px;
     display:flex;
     flex-direction:column;
-}
+} */
 
-.container-cantidad-resultados h2 {
-    color:#4c4c4c;
+/* .container-cantidad-resultados h2 {
+    color:#4c4c4c; grisOscuro
     margin:5px 0;
-}
+} */
 
-.container-cantidad-resultados span {
-    color:#5f5f5f;
+/* .container-cantidad-resultados span {
+    color:#5f5f5f; grisClaro
     margin:5px 0;
-}
+} */
 
 
 
 /* contenedor cards de personajes */
- #container-resultados {
+ /* #container-resultados {
     display:flex;
     width:100%;
     margin-top:20px;
     flex-wrap:wrap; 
     justify-content:space-around;
     align-items:center;
-}
+} */
 
-#container-resultados .personaje {
+/* #container-resultados .personaje {
     width:300px;
     height:300px;
     margin:0 20px;
@@ -181,15 +138,15 @@ main .container-cantidad-resultados {
 #container-resultados .personaje img {
     height: 15rem;
     width:15rem;
-}
+} */
 
-#container-resultados .personaje h3{
+/* #container-resultados .personaje h3{
     margin:15px;
     font-family: Rick-Morty;
     color:#42b5cb;
-}
+} */
 
-#container-resultados .episodio {
+/* #container-resultados .episodio {
     width:300px;
     height:100px;
     margin:10px 20px;
@@ -200,30 +157,30 @@ main .container-cantidad-resultados {
     flex-direction:column;
     justify-content:center;
     align-items: start;
-}
+} */
 
-#container-resultados .episodio h3 {
+/* #container-resultados .episodio h3 {
     font-family:Roboto;
     color:#343434;
     margin:5px 0;
-}
+} */
 
-#container-resultados .episodio span {
+/* #container-resultados .episodio span {
     font-family:Roboto;
     color:#4c4c4c;
-}
+} */
 
 
 
 
 
 /* botones de paginacion */
-.container-botones {
+/* .container-botones {
     display:flex;
     justify-content: center;
-}
+} */
 
-.container-botones button {
+/* .container-botones button {
     font-size:30px;
     margin:2px;
     margin-bottom:20px;
@@ -232,20 +189,50 @@ main .container-cantidad-resultados {
     border-radius:10px;
     background-color: #7237ab;
     color: white;
- }
+ } */
+
+/* vista personaje individual */
+/* main #container-personaje-individual {
+    height:800px;
+    width: 100%;
+    background-color:#bfdf43;
+
+} */
+
+/* #container-personaje-individual .card-personaje-individual {
+    font-family:Roboto;
+    width:90%;
+    height:700px;
+    border: 1px solid black;
+    border-radius:20px;
+    display:flex;
+    flex-direction:column;
+    align-items: center;
+} */
+
+/* .card-personaje-individual img {
+    width:200px;
+    height:200px;
+    border-radius:20px;
+    margin: 20px 0;
+} */
 
 
+/* .card-personaje-individual h2 {
+    
+    color:#2f2f2f;
+} */
 
  /* footer */
-body footer {
+/* body footer {
     height:100px;
     background-color: #321250;
     display:flex;
     justify-content:center;
     align-items:center;
-}
+} */
 
-footer span {
+/* footer span {
     font-family: Rick-Morty;
     color:#bfdf43;
-}
+} */
