@@ -30,20 +30,33 @@ const $divEpisodioIndividual = $("#container-episodio-individual");
 let currentPage = 1;
 let maxPage = 1;
 let currentSearch = "";
-let url =""
+let url ="https://rickandmortyapi.com/api/character?page=1"
 let cantidadResultados = ""
+let tipo = "characters"
 
+
+//endpoints api
+// base https://rickandmortyapi.com/api
+// characters: "https://rickandmortyapi.com/api/character",
+//https://rickandmortyapi.com/api/character/${id}   con el parametro de id pasado para cuando quiero acceder a un personaje especifico
+
+// episodes: "https://rickandmortyapi.com/api/episode"
 
 
 // obtener datos al cargar la pagina
-async function obtenerDatos(page, tipo) {
+async function obtenerDatos(url) {
     try {
-      let url = construirURL(tipo, page);
+      
       const response = await axios(url);
       console.log(url)
+      console.log(response)
 
+      maxPage = response.data.info.pages;
       cantidadResultados = response.data.info.count;
+      console.log(maxPage)
+      console.log(cantidadResultados)
 
+      console.log(response.data)
       return response.data;
     } catch (error) {
       console.log("Error en la búsqueda:", error);
@@ -51,221 +64,118 @@ async function obtenerDatos(page, tipo) {
     }
   }
 
+  //obtenerDatos puede volver a tener la funcion pintar datos adentro de nuevo y entonces solo pintaria lo que le pido en el momento que traiga
+
+  // como podria saber que tipo es? inicio tipo en personajes y ejecuto pintar
+  // let tipo = "character" fuera de la funcion (global)
+  //en obtenerDatos tengo que decir de que url los traigo if tipo === "character"
+  // entonces url = `https://rickandmortyapi.com/api/${tipo}/?page=${page}`
+  // reasignar el valor de url en cada funcion antes de obtenerDatos y a la funcion obtenerDatos pasarle la url como parametro   url = construirURL(tipo, page);
 
 //asignar url segun tipo de busqueda (episodios o personajes)
 function construirURL(tipo, page) {
     const hayBusqueda = currentSearch !== "";
+    const hayStatus = $selectStatus.value !== "";
+    console.log($selectStatus.value)
+    let urlBase = ""
 
     if (hayBusqueda) {
-        url = tipo === "episodios" ? `https://rickandmortyapi.com/api/episode/?name=${currentSearch}&page=${page}` : `https://rickandmortyapi.com/api/character/?name=${currentSearch}&page=${page}`;
+        urlBase = tipo === "episode" ? `https://rickandmortyapi.com/api/episode/?name=${currentSearch}&page=${page}` : `https://rickandmortyapi.com/api/character/?name=${currentSearch}&page=${page}`;
     } else {
-        url = tipo === "episodios" ? `https://rickandmortyapi.com/api/episode?page=${page}` : `https://rickandmortyapi.com/api/character?page=${page}`;
+        urlBase = tipo === "episode" ? `https://rickandmortyapi.com/api/episode?page=${page}` : `https://rickandmortyapi.com/api/character?page=${page}`;
     }
+    if (hayStatus) {
+      urlStatus = urlBase += `&status=${$selectStatus.value}`
+    }
+    // de esta manera le coloca status a los episodios tambien, quiero lograr una forma de que se obtengan los datos y se pinten desde aca, desde que se construye la url, probe con acceder desde personaje.status y haciendole un filter al array de personajes para que los muestre y no los pinta, ademas pienso que si lo controlo desde l construccion de la url despues en la paginacion lo puedo hacer mas simple
+
+    console.log(urlStatus)
+    url = urlStatus
     console.log(url)
     return url
-
   }
+
+//despues de hay busqueda deberia tener dos minifunciones mas tipo hayStatus y hayGenero?
+
+//mostrar u ocultar elementos
+function mostrarElemento(selectors) {
+  for (const selector of selectors) {
+      selector.classList.remove("hidden");
+  }
+};
+function ocultarElemento(selectors) {
+  for (const selector of selectors) {
+    selector.classList.add("hidden");
+  }
+};
+
+//mostrar cantidad de resultados
+function pintarResultados() {
+  $spanResultados.innerText = `${cantidadResultados} resultados`
+}
 
 //============== personajes ==================
 
 // mostrar personajes
 function pintarPersonajes(arrayPersonajes) {
-    console.log("se pintaron los personajes de la pagina", `${currentPage}`)
+  console.log("se pintaron los personajes de la pagina", `${currentPage}`)
 
-    $containerResultados.innerHTML = "";
-    pintarResultados()
-
-    for (const personaje of arrayPersonajes) {
-         $containerResultados.innerHTML += `
-         <div class="personaje hover:scale-110 w-[300px] h-[300px] mx-5 flex flex-col justify-center items-center ">
-         <img class="h-60 w-60" src="${personaje.image}">
-         <h3 class="m-4 text-roboto text-grisOscuro" >${personaje.name}</h3>
-         </div>`
-    }
-    personajesClick(arrayPersonajes)
-}
-//agregar evento click a cada personajes
-function personajesClick(arrayPersonajes) {
-  const arrayCards = $$(".personaje")
-
-  arrayCards.forEach((card, i) => { 
-    card.addEventListener("click", () =>{
-      mostrarElemento([$divPersonajeIndividual])
-      ocultarElemento([$divCantidadYResultados, $divBotonesPaginacion])
-      pintarPersonajeIndividual(arrayPersonajes[i]);
-      console.log(arrayPersonajes[i])
-    })
-  })
-}
-
-//mostrar card de personaje individual
-function pintarPersonajeIndividual(personaje) {
-  console.log(personaje); 
-  
-  $divPersonajeIndividual.innerHTML = `
-    <div class="card-personaje-individual text-roboto w-11/12 h-[700px] border border-solid border-black rounded-[20px] flex flex-col items-center">
-      <img class="w-[200px] h-[200px] rounded-[20px] my-5" src="${personaje.image}" alt="${personaje.name}">
-      <h2 class="text-grisLabel" >${personaje.name}</h2>
-      <p>Estado: ${personaje.status}</p>
-      <p>Especie: ${personaje.species}</p>
-      <p>Género: ${personaje.gender}</p>
-      <p>Origen: ${personaje.origin.name}</p>
-      <div id="container-episodios" class="w-10/12 flex flex-wrap justify-center items-center gap-4 max-h-[100vh] overflow-y-auto" >aca va un loader</div>
-    </div>
-  `;
-  episodiosPorPersonaje(personaje)
-}
-
-//traer el array de episodios por personaje y ejecutar la funcion que los pinta
-async function episodiosPorPersonaje(personaje) {
-  try {
-    const arrayPromises = personaje.episode.map(elem => axios(elem))
-
-        const response = await Promise.all(arrayPromises)
-
-        pintarEpisodiosPorPersonaje(response)
-        // lo ideal es que en el tp haya un loading en el div que contiene los episodios
-    } catch (error) {
-        console.log(error)
-    }
-}
-
-
-//pintar episodios en la card de personaje
-function pintarEpisodiosPorPersonaje(arrayEpisodios) {
-  console.log(arrayEpisodios)
-  const $divEpisodios = $("#container-episodios")
-  $divEpisodios.innerHTML = "";
-
-  const episodiosLimpios = arrayEpisodios.map(e => e.data)
-
-  for (const episodio of episodiosLimpios) {
-    $divEpisodios.innerHTML += `<div class="episodio  my-2.5 mx-5 p-2.5 border border-solid border-grisOscuro rounded-[10px] flex flex-col justify-center items-start">
-         <h3 class="text-roboto text-nombreEpisodio my-[5px]" >${episodio.name}</h3>
-
-         </div>
-    `
-  }
-
-  console.log(episodiosLimpios)
-  episodiosClick(episodiosLimpios)
-}
-
-
-// <span class="text-roboto text-grisOscuro" >${episodio.data.air_date}</span>
-// <span class="text-roboto text-grisOscuro" >${episodio.data.episode}</span>
-
-
-//============== episodios ==================
-
-// mostrar episodios
-function pintarEpisodios(arrayEpisodios) {
-    console.log("se pintaron los episodios de la pagina", `${currentPage}`)
-    console.log(maxPage)
-    console.log(arrayEpisodios)
-    $containerResultados.innerHTML = "";
-    pintarResultados()
-
-    for (const episodio of arrayEpisodios) {
-         $containerResultados.innerHTML += `<div class="episodio w-[300px] h-[100px] my-2.5 mx-5 p-2.5 border border-solid border-grisOscuro rounded-[10px] flex flex-col justify-center items-start">
-         <h3 class="text-roboto text-nombreEpisodio my-[5px]" >${episodio.name}</h3>
-         <span class="text-roboto text-grisOscuro" >${episodio.air_date}</span>
-         <span class="text-roboto text-grisOscuro" >${episodio.episode}</span>
-         </div>`
-    }
-    episodiosClick(arrayEpisodios)
-}
-//agregar eventos ckick a los episodios
-function episodiosClick(arrayEpisodios) {
-  const arrayCards = $$(".episodio")
-
-  arrayCards.forEach((card, i) => { 
-    card.addEventListener("click", () =>{
-      mostrarElemento([$divEpisodioIndividual])
-      ocultarElemento([$divCantidadYResultados, $divBotonesPaginacion, $divPersonajeIndividual])
-      pintarEpisodioIndividual(arrayEpisodios[i]);
-    })
-  })
-}
-//mostrar card de cada episodio
-function pintarEpisodioIndividual(episodio) {
-  console.log(episodio); 
-  
-  $divEpisodioIndividual.innerHTML = `
-  <div class="w-full h-[600px] flex flex-col items-center">
-  <h3>${episodio.name}</h3>
-  <span>${episodio.air_date}</span>
-  <span>${episodio.episode}</span>
-  <div id="container-personajes" class="w-10/12 flex flex-wrap justify-center items-center gap-4 max-h-[100vh] overflow-y-auto"></div>
-  </div>
-  `;
-  personajesPorEpisodio(episodio)
-}
-
-//traer el array de personajes por episodio y ejecutar la funcion que los pinta
-async function personajesPorEpisodio(episodio) {
-  try {
-    console.log(episodio)
-    const arrayPromises = episodio.characters.map(elem => axios(elem))
-    console.log(arrayPromises)
-
-        const response = await Promise.all(arrayPromises)
-        console.log(response)
-
-        const personajesLimpios = response.map(p => p.data)
-        pintarPersonajesPorEpisodio(personajesLimpios)
-    } catch (error) {
-        console.log(error)
-    }
-}
-
-
-
-
-//pintar personajes en la card de episodios
-function pintarPersonajesPorEpisodio(arrayPersonajes) {
-  console.log(arrayPersonajes)
-  const $divPersonajes = $("#container-personajes")
-  $divPersonajes.innerHTML = "";
+  $containerResultados.innerHTML = "";
+  pintarResultados()
 
   for (const personaje of arrayPersonajes) {
-    $divPersonajes.innerHTML += `
-    <div class="personaje hover:scale-110 w-[300px] h-[300px] mx-5 flex flex-col justify-center items-center ">
-    <img class="h-60 w-60" src="${personaje.data.image}">
-    <h3 class="m-4 text-roboto text-grisOscuro" >${personaje.data.name}</h3>
-    </div>`
+       $containerResultados.innerHTML += `
+       <div class="personaje hover:scale-110 w-[300px] h-[300px] mx-5 flex flex-col justify-center items-center ">
+       <img class="h-60 w-60" src="${personaje.image}">
+       <h3 class="m-4 text-roboto text-grisOscuro" >${personaje.name}</h3>
+       </div>`
   }
-  personajesClick(arrayPersonajes)
+  // personajesClick(arrayPersonajes)
+}
+//entre estos dos deberia poner una condicion que decida si lo hago desde la card o desde la vista general para meterlo o no dentro de un div? de que dependeria esta condicion?
+
+//mostrar episodios
+function pintarEpisodios(arrayEpisodios) {
+  console.log("se pintaron los episodios de la pagina", `${currentPage}`)
+  console.log(maxPage)
+  console.log(arrayEpisodios)
+  $containerResultados.innerHTML = "";
+  pintarResultados()
+
+  for (const episodio of arrayEpisodios) {
+       $containerResultados.innerHTML += `<div class="episodio w-[300px] h-[100px] my-2.5 mx-5 p-2.5 border border-solid border-grisOscuro rounded-[10px] flex flex-col justify-center items-start">
+       <h3 class="text-roboto text-nombreEpisodio my-[5px]" >${episodio.name}</h3>
+       <span class="text-roboto text-grisOscuro" >${episodio.air_date}</span>
+       <span class="text-roboto text-grisOscuro" >${episodio.episode}</span>
+       </div>`
+  }
 }
 
+//hacer clickeabes los personajes
+//pintar la card del personaje individual
+//traer el array de episodios donde participa el personaje individual
+//pintar los episodios en la card del personaje individual
+//hacer clickeables los episodios
 
-//mostrar cantidad de resultados
-function pintarResultados() {
-    $spanResultados.innerText = `${cantidadResultados} resultados`
-}
 
 
-//mostrar u ocultar elementos
-function mostrarElemento(selectors) {
-    for (const selector of selectors) {
-        selector.classList.remove("hidden");
-    }
-  };
-  function ocultarElemento(selectors) {
-    for (const selector of selectors) {
-      selector.classList.add("hidden");
-    }
-  };
+
+
+
+
+
 
 //seleccionar tipo
 $selectTipo.addEventListener("input", async () => {
     currentPage = 1;
     const tipo = $selectTipo.value;
+
+    url = construirURL(tipo, currentPage)
   
-    const data = await obtenerDatos(currentPage, tipo);
+    const data = await obtenerDatos(url);
+    console.log(data)
   
-  
-    if (tipo === "episodios") {
+    if (tipo === "episode") {
       pintarEpisodios(data.results);
       ocultarElemento([$containerStatus, $containerGenero]);
     } else {
@@ -276,6 +186,30 @@ $selectTipo.addEventListener("input", async () => {
     maxPage = data.info.pages;
   });
 
+//selccionar status
+//deberia costruir la url basica y sumarle lo del status y lo del genero? ir estableciendo por fuera la url para que tambien la reutilice en la paginacion ?
+
+// url = "https://rickandmortyapi.com/api/character/?status=${valorStatus}"
+
+$selectStatus.addEventListener("input", async () => {
+  currentPage = 1
+  
+  let valorStatus = $selectStatus.value
+  url = `https://rickandmortyapi.com/api/character/?status=${valorStatus}`
+
+  console.log(valorStatus)
+
+
+  const data = await obtenerDatos(url)
+  console.log(data)
+  let personajes = data.results
+  console.log(personajes)
+
+  pintarPersonajes(personajes)
+
+
+}) 
+
 //buscar
 $btnBuscar.addEventListener("click", async () => {
     $containerResultados.innerHTML = `<h1>Loading...</h1>`;
@@ -283,15 +217,18 @@ $btnBuscar.addEventListener("click", async () => {
     currentSearch = $inputBusqueda.value;
     const tipo = $selectTipo.value;
   
-    const data = await obtenerDatos(currentPage, tipo);
+    url = construirURL(tipo, currentPage)
+    const data = await obtenerDatos(url);
   
-    if (tipo === "episodios") {
+    if (tipo === "episode") {
       pintarEpisodios(data.results);
     } else {
       pintarPersonajes(data.results);
     }
     maxPage = data.info.pages;
   });
+
+
 
 //paginacion
 $btnSiguiente.addEventListener("click", async () => {
@@ -300,9 +237,10 @@ $btnSiguiente.addEventListener("click", async () => {
         currentPage++;
         const tipo = $selectTipo.value;
   
-        const data = await obtenerDatos(currentPage, tipo);
+        url = construirURL(tipo,currentPage)
+        const data = await obtenerDatos(url);
 
-        if(tipo === "episodios") {
+        if(tipo === "episode") {
             pintarEpisodios(data.results)
         } else {
             pintarPersonajes(data.results)
@@ -315,9 +253,10 @@ $btnAnterior.addEventListener("click", async () => {
         currentPage--;
         const tipo = $selectTipo.value;
   
-        const data = await obtenerDatos(currentPage, tipo);
+        url = construirURL(tipo,currentPage)
+        const data = await obtenerDatos(url);
 
-        if(tipo === "episodios") {
+        if(tipo === "episode") {
             pintarEpisodios(data.results)
         } else {
             pintarPersonajes(data.results)
@@ -330,9 +269,10 @@ $btnPrimera.addEventListener("click", async () => {
         currentPage = 1
         const tipo = $selectTipo.value;
 
-        const data = await obtenerDatos(currentPage, tipo);
+        url = construirURL(tipo,currentPage)
+        const data = await obtenerDatos(url);
 
-        if(tipo === "episodios") {
+        if(tipo === "episode") {
             pintarEpisodios(data.results)
         } else {
             pintarPersonajes(data.results)
@@ -345,9 +285,10 @@ $btnUltima.addEventListener("click", async () => {
         currentPage = maxPage
         const tipo = $selectTipo.value;
         
-        const data = await obtenerDatos(currentPage, tipo);
+        url = construirURL(tipo,currentPage)
+        const data = await obtenerDatos(url);
 
-        if(tipo === "episodios") {
+        if(tipo === "episode") {
             pintarEpisodios(data.results)
         } else {
             pintarPersonajes(data.results)
@@ -379,9 +320,10 @@ $btnUltima.addEventListener("click", async () => {
   window.onload = async () => {
     currentPage = 1;
     currentSearch = ""; 
-    tipo = $inputBusqueda.value
+    url ="https://rickandmortyapi.com/api/character?page=1"
+    tipo = "characters"
   
-    const data = await obtenerDatos(currentPage, tipo);
+    const data = await obtenerDatos(url);
     if (data) {
       maxPage = data.info.pages;
       pintarPersonajes(data.results);
