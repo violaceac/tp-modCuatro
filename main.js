@@ -30,9 +30,9 @@ const $divEpisodioIndividual = $("#container-episodio-individual");
 let currentPage = 1;
 let maxPage = 1;
 let currentSearch = "";
-let url ="https://rickandmortyapi.com/api/character?page=1"
+let url =""
 let cantidadResultados = ""
-let tipo = "characters"
+let tipo = ""
 
 
 //endpoints api
@@ -43,7 +43,7 @@ let tipo = "characters"
 // episodes: "https://rickandmortyapi.com/api/episode"
 
 
-// obtener datos al cargar la pagina
+// obtener datos de la url
 async function obtenerDatos(url) {
     try {
       
@@ -53,8 +53,7 @@ async function obtenerDatos(url) {
 
       maxPage = response.data.info.pages;
       cantidadResultados = response.data.info.count;
-      console.log(maxPage)
-      console.log(cantidadResultados)
+
 
       console.log(response.data)
       return response.data;
@@ -64,38 +63,23 @@ async function obtenerDatos(url) {
     }
   }
 
-  //obtenerDatos puede volver a tener la funcion pintar datos adentro de nuevo y entonces solo pintaria lo que le pido en el momento que traiga
-
-  // como podria saber que tipo es? inicio tipo en personajes y ejecuto pintar
-  // let tipo = "character" fuera de la funcion (global)
-  //en obtenerDatos tengo que decir de que url los traigo if tipo === "character"
-  // entonces url = `https://rickandmortyapi.com/api/${tipo}/?page=${page}`
-  // reasignar el valor de url en cada funcion antes de obtenerDatos y a la funcion obtenerDatos pasarle la url como parametro   url = construirURL(tipo, page);
 
 //asignar url segun tipo de busqueda (episodios o personajes)
 function construirURL(tipo, page) {
     const hayBusqueda = currentSearch !== "";
-    const hayStatus = $selectStatus.value !== "";
     console.log($selectStatus.value)
-    let urlBase = ""
+
 
     if (hayBusqueda) {
-        urlBase = tipo === "episode" ? `https://rickandmortyapi.com/api/episode/?name=${currentSearch}&page=${page}` : `https://rickandmortyapi.com/api/character/?name=${currentSearch}&page=${page}`;
+        url = tipo === "episode" ? `https://rickandmortyapi.com/api/episode/?name=${currentSearch}&page=${page}` : `https://rickandmortyapi.com/api/character/?name=${currentSearch}&page=${page}`;
     } else {
-        urlBase = tipo === "episode" ? `https://rickandmortyapi.com/api/episode?page=${page}` : `https://rickandmortyapi.com/api/character?page=${page}`;
+        url = tipo === "episode" ? `https://rickandmortyapi.com/api/episode?page=${page}` : `https://rickandmortyapi.com/api/character?page=${page}`;
     }
-    if (hayStatus) {
-      urlStatus = urlBase += `&status=${$selectStatus.value}`
-    }
-    // de esta manera le coloca status a los episodios tambien, quiero lograr una forma de que se obtengan los datos y se pinten desde aca, desde que se construye la url, probe con acceder desde personaje.status y haciendole un filter al array de personajes para que los muestre y no los pinta, ademas pienso que si lo controlo desde l construccion de la url despues en la paginacion lo puedo hacer mas simple
 
-    console.log(urlStatus)
-    url = urlStatus
     console.log(url)
     return url
   }
 
-//despues de hay busqueda deberia tener dos minifunciones mas tipo hayStatus y hayGenero?
 
 //mostrar u ocultar elementos
 function mostrarElemento(selectors) {
@@ -132,6 +116,8 @@ function pintarPersonajes(arrayPersonajes) {
   }
   // personajesClick(arrayPersonajes)
 }
+
+
 //entre estos dos deberia poner una condicion que decida si lo hago desde la card o desde la vista general para meterlo o no dentro de un div? de que dependeria esta condicion?
 
 //mostrar episodios
@@ -171,7 +157,8 @@ $selectTipo.addEventListener("input", async () => {
     const tipo = $selectTipo.value;
 
     url = construirURL(tipo, currentPage)
-  
+
+
     const data = await obtenerDatos(url);
     console.log(data)
   
@@ -186,29 +173,57 @@ $selectTipo.addEventListener("input", async () => {
     maxPage = data.info.pages;
   });
 
+  $selectGenero.addEventListener("input", async () => {
+    currentPage = 1;
+    const tipo = $selectTipo.value;
+    
+
+    url = construirURL(tipo, currentPage)
+    hayGenero(url)
+    hayStatus(url)
+    console.log(url)
+
+    const data = await obtenerDatos(url)
+    console.log(data)
+
+    pintarPersonajes(data.results)
+  })
+
+  function hayGenero() {
+    if($selectGenero.value !== "") {
+      url += `&gender=${$selectGenero.value}`
+    } else {
+      return url
+    }
+    return url
+  }
+
 //selccionar status
-//deberia costruir la url basica y sumarle lo del status y lo del genero? ir estableciendo por fuera la url para que tambien la reutilice en la paginacion ?
-
-// url = "https://rickandmortyapi.com/api/character/?status=${valorStatus}"
-
 $selectStatus.addEventListener("input", async () => {
-  currentPage = 1
+  currentPage = 1;
+  const tipo = $selectTipo.value;
   
-  let valorStatus = $selectStatus.value
-  url = `https://rickandmortyapi.com/api/character/?status=${valorStatus}`
 
-  console.log(valorStatus)
-
+  url = construirURL(tipo, currentPage)
+  hayGenero(url)
+  hayStatus(url)
+  console.log(url)
 
   const data = await obtenerDatos(url)
   console.log(data)
-  let personajes = data.results
-  console.log(personajes)
 
-  pintarPersonajes(personajes)
-
-
+  pintarPersonajes(data.results)
 }) 
+
+function hayStatus() {
+  if($selectStatus.value !== "") {
+    url += `&status=${$selectStatus.value}`
+  } else {
+    return url
+  }
+  return url
+}
+
 
 //buscar
 $btnBuscar.addEventListener("click", async () => {
@@ -218,6 +233,9 @@ $btnBuscar.addEventListener("click", async () => {
     const tipo = $selectTipo.value;
   
     url = construirURL(tipo, currentPage)
+    hayGenero()
+    hayStatus()
+    console.log(url)
     const data = await obtenerDatos(url);
   
     if (tipo === "episode") {
@@ -238,6 +256,9 @@ $btnSiguiente.addEventListener("click", async () => {
         const tipo = $selectTipo.value;
   
         url = construirURL(tipo,currentPage)
+        hayGenero(url)
+        hayStatus(url)
+
         const data = await obtenerDatos(url);
 
         if(tipo === "episode") {
@@ -254,6 +275,9 @@ $btnAnterior.addEventListener("click", async () => {
         const tipo = $selectTipo.value;
   
         url = construirURL(tipo,currentPage)
+        hayGenero(url)
+        hayStatus(url)
+
         const data = await obtenerDatos(url);
 
         if(tipo === "episode") {
@@ -270,6 +294,9 @@ $btnPrimera.addEventListener("click", async () => {
         const tipo = $selectTipo.value;
 
         url = construirURL(tipo,currentPage)
+        hayGenero(url)
+        hayStatus(url)
+
         const data = await obtenerDatos(url);
 
         if(tipo === "episode") {
@@ -286,6 +313,9 @@ $btnUltima.addEventListener("click", async () => {
         const tipo = $selectTipo.value;
         
         url = construirURL(tipo,currentPage)
+        hayGenero(url)
+        hayStatus(url)
+
         const data = await obtenerDatos(url);
 
         if(tipo === "episode") {

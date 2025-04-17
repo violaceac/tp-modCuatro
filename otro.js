@@ -36,6 +36,7 @@ function pintarPersonajeIndividual(personaje) {
 //traer el array de episodios por personaje y ejecutar la funcion que los pinta
 async function episodiosPorPersonaje(personaje) {
   try {
+    
     const arrayPromises = personaje.episode.map(elem => axios(elem))
 
         const response = await Promise.all(arrayPromises)
